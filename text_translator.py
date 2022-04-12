@@ -1,3 +1,5 @@
+import random as rd
+
 def list_permutations(word):
     """
     word: word of string type
@@ -58,19 +60,66 @@ def owo_translation(word):
     return word + " what's this?"
 
 
+def r_translation(word):
+    word_characters = [char for char in word]
+    for i in range(len(word_characters)):
+        if word_characters[i] == "r":
+            word_characters[i] = "w"
+    return "".join(word_characters)
+
+
+def l_translation(word):
+    word_characters = [char for char in word]
+    for i in range(len(word_characters)):
+        if word_characters[i] == "l":
+            word_characters[i] = "w"
+    return "".join(word_characters)
+
+
+def random_stuttering(word):
+    if len(word) >= 5 and rd.randrange(1,6) == 1:
+        return word[0] + "-" + word
+    return word
+
+
+def random_suffix(word):
+    emoji_list = ["(≧▽≦)", "(ㆁωㆁ*)", "(/◕ヮ◕)/", "('・ω・')", "xD", "x)", "^^", "(^o^)", "*blushes*"]
+    if rd.randrange(1,16) == 1:
+        return word + " " + rd.choice(emoji_list)
+    return word
+
+
 def text_translation(text):
     """
     text: string that can contain any character
     return: text translated to its uwu and owo form
-    """
-    translated_text = []
-    for word in text.split(" "):
+    """ 
+    list_of_words = ["you", "are", "to", "peut etre"] # gonna transform this into a dict
+    list_of_words_translated = ["u", "r", "2", "pt"] # gonna get rid of that asap
+    translated_text = text.split(" ")
+    for word in translated_text:
+        if any(elt == word for elt in list_of_words): # for specific words
+            translated_text[translated_text.index(word)] = list_of_words_translated[[elt in word for elt in list_of_words].index(True)]
+
+        elif "r" in word or "R" in word:
+            translated_text[translated_text.index(word)] = r_translation(word)
+        elif "l" in word or "L" in word:
+            translated_text[translated_text.index(word)] = l_translation(word)
+
         # o is before u because there is a way higher chance of 'ou' than 'uo'
-        # in english
-        if "o" in word or "O" in word:
-            translated_text.append(owo_translation(word) + " ")
+        elif "o" in word or "O" in word:
+            translated_text[translated_text.index(word)] = owo_translation(word)
         elif "u" in word or "U" in word:
-            translated_text.append(uwu_translation(word) + " ")
-        else:
-            translated_text.append(word + " ")
-    return "".join(translated_text)
+            translated_text[translated_text.index(word)] = uwu_translation(word)
+    
+    current_word_index = 0
+    for word in translated_text:
+        translated_text[current_word_index] = random_stuttering(word)
+        current_word_index += 1
+
+    current_word_index = 0
+    for word in translated_text:
+        translated_text[current_word_index] = random_suffix(word)
+        current_word_index += 1
+
+    return " ".join(translated_text)
