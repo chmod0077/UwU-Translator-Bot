@@ -8,11 +8,12 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import random as rd
+import os
 
 
 def retrieve_gif(search_term, limit):
     # set the apikey and limit
-    apikey = "SZRYJ70573UE"  # test value
+    apikey = os.getenv("api_key")  # test value
     # load the user's anonymous ID from cookies or some other disk storage
     # anon_id = <from db/cookies>
     # ELSE - first time user, grab and store their the anonymous ID

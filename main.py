@@ -5,6 +5,7 @@ import discord
 from datetime import datetime
 import text_translator as tt
 import media_retriever as mr
+import os
 
 client = discord.Client()
 prefix = "^^"
@@ -74,4 +75,4 @@ async def on_message(message):
             # gif
             await message.channel.send("\t``(uwu/owo) + your_message``: I delete your message and translate it into its UwU and OwO form")
 
-client.run()
+client.run(os.getenv("discord_token"))
