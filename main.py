@@ -10,8 +10,14 @@ import json
 from pathlib import Path
 
 
-client = discord.Client()
 bot_prefix = "^^"
+client = discord.Client(
+    activity=discord.Game(
+        name=(
+            "%scommands" %
+            bot_prefix)))
+start_time = datetime.now()
+
 
 def get_tokens():
     current_working_file = str(Path(__file__).parent.resolve())
@@ -38,7 +44,7 @@ async def on_message(message):
     if message.author != client.user:
         # prints out every message
         print(
-            "\n%s:\nServer: %s\nChannel: #%s\nUser: %s\nContent: %s" %
+            "%s (%s, %s, %s, %s)" %
             (datetime.now().strftime("%H:%M:%S"),
              message.guild.name,
              message.channel.name,
@@ -57,7 +63,7 @@ async def on_message(message):
         # says and translates a given message
         elif message.content.startswith(bot_prefix + "say"):
             translation = tt.text_translation(
-                message.content[len(bot_prefix) + 3:])
+                message.content[len(bot_prefix) + 4:])
             print("\tIdentified %ssay command" % bot_prefix)
             print("\tDeleted message from %s" % message.author.name)
             await message.delete()
@@ -71,10 +77,34 @@ async def on_message(message):
             await message.channel.send(gif_url)
 
         elif message.content.startswith(bot_prefix + "cpasta"):
-            copypasta_translation = tt.text_translation(mr.retrieve_copypasta("copypastas.txt"))
+            copypasta_translation = tt.text_translation(
+                mr.retrieve_copypasta("copypastas.txt"))
             print("\tIdentified %scpasta command" % bot_prefix)
             print("\tSent copypasta: %s" % (copypasta_translation))
             await message.channel.send(copypasta_translation)
+
+        # hidden commands
+        elif message.content.startswith(bot_prefix + "stats"):
+            uptime = datetime.now() - start_time
+            print("\tIdentified %sstats command" % bot_prefix)
+            print("\tDeleted message from %s" % message.author.name)
+            await message.delete()
+            print("Uptime: %s\nServers: %s" %
+                  (uptime, str(len(client.guilds))))
+            await message.channel.send("Uptime: %s\nServers: %s" % (uptime, str(len(client.guilds))))
+
+        elif message.content.startswith(bot_prefix + "read"):
+            print("\tIdentified %sread command" % bot_prefix)
+            print("\tDeleted message from %s" % message.author.name)
+            await message.delete()
+            try:
+                reading = mr.retrieve_text(
+                    message.content[len(bot_prefix) + 5:])
+                print("\tSent %s" % message.content[len(bot_prefix) + 5:])
+                await message.channel.send(tt.text_translation(reading))
+            except BaseException:
+                print("\tCould not send %s" %
+                      message.content[len(bot_prefix) + 5:])
 
         # useless commands
         elif message.content.startswith(bot_prefix + "whoru"):
@@ -86,20 +116,8 @@ async def on_message(message):
 
         elif message.content.startswith(bot_prefix + "commands"):
             print("\tIdentified %scommands command" % bot_prefix)
-            await message.channel.send("*Prefix:* ``%s``" % bot_prefix)  # bot_prefix
-            await message.channel.send("*Commands:*")
-            # whoru
-            await message.channel.send("\t``%swhoru``: I talk extensively about myself because I don't have a gf" % bot_prefix)
-            # commands
-            await message.channel.send("\t``%scommands``: I display this message once again, because why not" % bot_prefix)
-            # uwu
-            await message.channel.send("\t``your_message containing uwu/owo``: I reply to your message and translate it into its UwU and OwO form")
-            # say
-            await message.channel.send("\t``%ssay + your_message``: I delete your message and translate it into its UwU and OwO form" % bot_prefix)
-            # gif
-            await message.channel.send("\t``%sgif``: I post a random gif that is very much OwO" % bot_prefix)
-            # copypasta
-            await message.channel.send("\t``%scpasta``: I post a random copypasta that is very much OwO" % bot_prefix)
+            await message.channel.send("*Prefix:* ``%s``\n*Commands:*\n``%swhoru``: I talk extensively about myself because I don't have a gf\n``%scommands``: I display this message once again, because why not\n``your_message containing uwu/owo``: I reply to your message and translate it into its UwU and OwO form\n``%ssay + your_message``: I delete your message and translate it into its UwU and OwO form\n``%sgif``: I post a random gif that is very much OwO\n``%scpasta``: I post a random copypasta that is very much OwO" % (bot_prefix, bot_prefix, bot_prefix, bot_prefix, bot_prefix, bot_prefix))  # bot_prefix
+
 
 discord_token, api_key = get_tokens()
 client.run(discord_token)

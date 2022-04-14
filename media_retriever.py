@@ -4,8 +4,8 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import random as rd
-import os
 from pathlib import Path
+from PyPDF2 import PdfFileReader, PdfFileWriter
 
 
 # i stole this entire function from stackoverflow because i'm not familiar with the
@@ -41,6 +41,7 @@ def retrieve_gif(search_term, limit, api_key):
     else:
         gif_list = None
 
+
 def retrieve_copypasta(file_name):
     """
     file_name: string of the name of the file with extension
@@ -62,6 +63,7 @@ def retrieve_emoji(file_name):
         emoji_file = file.read()
         return rd.choice(emoji_file.split("\n"))
 
+
 def retrieve_specific_words(file_name):
     """
     file_name: string of the name of the file with extension
@@ -74,3 +76,15 @@ def retrieve_specific_words(file_name):
         for elt in specific_words_file:
             specific_words_dict[elt.split(":")[0]] = elt.split(":")[1]
         return specific_words_dict
+
+
+def retrieve_text(file_name):
+    """
+    file_name: string of the name of the file with extension
+    return: random paragraph from file_name delimited by a line jump and a dot.
+    """
+    current_working_file = str(Path(__file__).parent.resolve())
+    file_path = current_working_file + "/medias/" + file_name # full path basically
+    with open(file_path, "r+") as full_text:
+        split_text = full_text.read().split(".\n") # paragraph delimiter
+        return " ".join((rd.choice(split_text)).split("\n")) + "."

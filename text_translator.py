@@ -117,9 +117,14 @@ def text_translation(text):
     translated_text = text.split(" ")
     for word in translated_text:
         specific_words_dict = mr.retrieve_specific_words("specific_words.txt")
-        if any(key == word for key in specific_words_dict.keys()):  # for specific words
-            confirmed_word = [key for key in specific_words_dict.keys() if key in word][0] # word that is in both specific_words_dict and text
-            translated_text[translated_text.index(word)] = specific_words_dict[confirmed_word] # replace word in text by its translation in specific_words_dict
+        if any(key == word for key in specific_words_dict.keys()
+               ):  # for specific words
+            # word that is in both specific_words_dict and text
+            confirmed_word = [
+                key for key in specific_words_dict.keys() if key in word][0]
+            # replace word in text by its translation in specific_words_dict
+            translated_text[translated_text.index(
+                word)] = specific_words_dict[confirmed_word]
 
         elif "r" in word or "R" in word:
             translated_text[translated_text.index(word)] = r_translation(word)
