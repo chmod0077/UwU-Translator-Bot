@@ -1,7 +1,3 @@
-# i stole this entire code from stackoverflow because i'm not familiar with the
-# tenor api at all so i'll maybe try to do it myself but i'm afraid
-# it will look identically so maybe not
-
 import requests
 import json
 import urllib.request
@@ -9,8 +5,12 @@ import urllib.parse
 import urllib.error
 import random as rd
 import os
+from pathlib import Path
 
 
+# i stole this entire function from stackoverflow because i'm not familiar with the
+# tenor api at all so i'll maybe try to do it myself but i'm afraid
+# it will look identically so maybe not
 def retrieve_gif(search_term, limit, api_key):
     # set the api_key and limit
     # load the user's anonymous ID from cookies or some other disk storage
@@ -40,3 +40,37 @@ def retrieve_gif(search_term, limit, api_key):
         return rd.choice(url_list)
     else:
         gif_list = None
+
+def retrieve_copypasta(file_name):
+    """
+    file_name: string of the name of the file with extension
+    return: random copypasta from file_name
+    """
+    current_working_file = str(Path(__file__).parent.resolve())
+    with open(current_working_file + "/medias/" + file_name, "r+") as file:
+        copypasta_file = file.read()
+        return rd.choice(copypasta_file.split("\n\n"))
+
+
+def retrieve_emoji(file_name):
+    """
+    file_name: string of the name of the file with extension
+    return: random emoji from file_name
+    """
+    current_working_file = str(Path(__file__).parent.resolve())
+    with open(current_working_file + "/medias/" + file_name, "r+") as file:
+        emoji_file = file.read()
+        return rd.choice(emoji_file.split("\n"))
+
+def retrieve_specific_words(file_name):
+    """
+    file_name: string of the name of the file with extension
+    return: dictionary of specific words from file_name
+    """
+    current_working_file = str(Path(__file__).parent.resolve())
+    with open(current_working_file + "/medias/" + file_name, "r+") as file:
+        specific_words_file = file.read().split("\n")
+        specific_words_dict = {}
+        for elt in specific_words_file:
+            specific_words_dict[elt.split(":")[0]] = elt.split(":")[1]
+        return specific_words_dict

@@ -2,6 +2,7 @@
 # but for now i'll just leave it as is
 
 import random as rd
+import media_retriever as mr
 
 
 def list_permutations(word):
@@ -103,20 +104,8 @@ def random_suffix(word):
     word: word of string type
     return: word with a suffix according to a certain probability, else, word
     """
-    emoji_list = [
-        "(≧▽≦)",
-        "(ㆁωㆁ*)",
-        "(/◕ヮ◕)/",
-        "('・ω・')",
-        "xD",
-        "x)",
-        "^^",
-        "(^o^)",
-        "*blushes*",
-        "UwU",
-        "OwO"]
     if rd.randrange(1, 16) == 1:
-        return word + " " + rd.choice(emoji_list)
+        return word + " " + mr.retrieve_emoji("emojis.txt")
     return word
 
 
@@ -125,15 +114,12 @@ def text_translation(text):
     text: string that can contain any character
     return: text translated to its uwu and owo form
     """
-    list_of_words = ["you", "are", "to",
-                     "love"]  # gonna transform this into a dict
-    # gonna get rid of that asap
-    list_of_words_translated = ["u", "r", "2", "luv"]
     translated_text = text.split(" ")
     for word in translated_text:
-        if any(elt == word for elt in list_of_words):  # for specific words
-            translated_text[translated_text.index(word)] = list_of_words_translated[[
-                elt in word for elt in list_of_words].index(True)]
+        specific_words_dict = mr.retrieve_specific_words("specific_words.txt")
+        if any(key == word for key in specific_words_dict.keys()):  # for specific words
+            confirmed_word = [key for key in specific_words_dict.keys() if key in word][0] # word that is in both specific_words_dict and text
+            translated_text[translated_text.index(word)] = specific_words_dict[confirmed_word] # replace word in text by its translation in specific_words_dict
 
         elif "r" in word or "R" in word:
             translated_text[translated_text.index(word)] = r_translation(word)

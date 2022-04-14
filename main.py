@@ -45,10 +45,12 @@ async def on_message(message):
              message.author.name,
              message.content))
 
+        # useful commands
         # detects if there any uwu or owo in the message
         if any(elt in message.content for elt in tt.list_permutations("uwu")) or any(
                 elt in message.content for elt in tt.list_permutations("owo")):
             translation = tt.text_translation(message.content)
+            print("\tIdentified uwu/owo in content")
             print("\tSent translation: %s" % (translation))
             await message.channel.send(translation)
 
@@ -68,6 +70,13 @@ async def on_message(message):
             print("\tSent gif: %s" % (gif_url))
             await message.channel.send(gif_url)
 
+        elif message.content.startswith(bot_prefix + "cpasta"):
+            copypasta_translation = tt.text_translation(mr.retrieve_copypasta("copypastas.txt"))
+            print("\tIdentified %scpasta command" % bot_prefix)
+            print("\tSent copypasta: %s" % (copypasta_translation))
+            await message.channel.send(copypasta_translation)
+
+        # useless commands
         elif message.content.startswith(bot_prefix + "whoru"):
             print("\tIdentified %swhoru command" % bot_prefix)
             await message.channel.send(tt.text_translation("Hello! My name is ") + "{0.user}".format(client))
@@ -83,12 +92,14 @@ async def on_message(message):
             await message.channel.send("\t``%swhoru``: I talk extensively about myself because I don't have a gf" % bot_prefix)
             # commands
             await message.channel.send("\t``%scommands``: I display this message once again, because why not" % bot_prefix)
-            # say
-            await message.channel.send("\t``%ssay + your_message``: I delete your message and translate it into its UwU and OwO form" % bot_prefix)
             # uwu
             await message.channel.send("\t``your_message containing uwu/owo``: I reply to your message and translate it into its UwU and OwO form")
+            # say
+            await message.channel.send("\t``%ssay + your_message``: I delete your message and translate it into its UwU and OwO form" % bot_prefix)
             # gif
             await message.channel.send("\t``%sgif``: I post a random gif that is very much OwO" % bot_prefix)
+            # copypasta
+            await message.channel.send("\t``%scpasta``: I post a random copypasta that is very much OwO" % bot_prefix)
 
 discord_token, api_key = get_tokens()
 client.run(discord_token)
