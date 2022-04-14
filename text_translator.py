@@ -29,7 +29,7 @@ def uwu_translation(word):
     return: word but with the first 'U' translated to 'UwU' or the first 'u' translated to 'uwu'
     """
     uwu_list = ["UwU", "uwu"]
-    if word not in list_permutations(uwu_list[1]):
+    if word.replace(".", "") not in list_permutations(uwu_list[1]):
         word_characters = [char for char in word]
         if uwu_list[0][0] in word_characters:
             # I voluntarily don't want to have more than one UwU per word
@@ -40,7 +40,7 @@ def uwu_translation(word):
             u_index = word_characters.index(uwu_list[1][0])
             word_characters[u_index] = uwu_list[1]
         return "".join(word_characters)
-    return word + " what's this?"
+    return word
 
 
 # assumes that there is an "o" in the word but doesnt know if its already owo
@@ -50,7 +50,7 @@ def owo_translation(word):
     return: word but with the first 'O' translated to 'OwO' or the first 'o' translated to 'owo'
     """
     owo_list = ["OwO", "owo"]
-    if word not in list_permutations(owo_list[1]):
+    if word.replace(".", "") not in list_permutations(owo_list[1]):
         word_characters = [char for char in word]
         if owo_list[0][0] in word_characters:
             # I voluntarily don't want to have more than one OwO per word
@@ -61,7 +61,7 @@ def owo_translation(word):
             o_index = word_characters.index(owo_list[1][0])
             word_characters[o_index] = owo_list[1]
         return "".join(word_characters)
-    return word + " what's this?"
+    return word
 
 
 def r_translation(word):
@@ -112,7 +112,9 @@ def random_suffix(word):
         "x)",
         "^^",
         "(^o^)",
-        "*blushes*"]
+        "*blushes*",
+        "UwU",
+        "OwO"]
     if rd.randrange(1, 16) == 1:
         return word + " " + rd.choice(emoji_list)
     return word
@@ -124,9 +126,9 @@ def text_translation(text):
     return: text translated to its uwu and owo form
     """
     list_of_words = ["you", "are", "to",
-                     "peut etre"]  # gonna transform this into a dict
+                     "love"]  # gonna transform this into a dict
     # gonna get rid of that asap
-    list_of_words_translated = ["u", "r", "2", "pt"]
+    list_of_words_translated = ["u", "r", "2", "luv"]
     translated_text = text.split(" ")
     for word in translated_text:
         if any(elt == word for elt in list_of_words):  # for specific words

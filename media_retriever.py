@@ -11,13 +11,12 @@ import random as rd
 import os
 
 
-def retrieve_gif(search_term, limit):
-    # set the apikey and limit
-    apikey = os.getenv("api_key")  # test value
+def retrieve_gif(search_term, limit, api_key):
+    # set the api_key and limit
     # load the user's anonymous ID from cookies or some other disk storage
     # anon_id = <from db/cookies>
     # ELSE - first time user, grab and store their the anonymous ID
-    r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % apikey)
+    r = requests.get("https://api.tenor.com/v1/anonid?key=%s" % api_key)
     if r.status_code == 200:
         anon_id = json.loads(r.content)["anon_id"]
         # store in db/cookies for re-use later
@@ -27,7 +26,7 @@ def retrieve_gif(search_term, limit):
     # get the top 8 GIFs for the search term
     r = requests.get(
         "https://api.tenor.com/v1/search?q=%s&key=%s&limit=%s&anon_id=%s" %
-        (search_term, apikey, limit, anon_id))
+        (search_term, api_key, limit, anon_id))
     if r.status_code == 200:
         url_list = []
         # load the GIFs using the urls for the smaller GIF sizes
