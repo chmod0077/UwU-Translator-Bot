@@ -38,6 +38,11 @@ async def on_ready():
         tt.text_translation("I have logged in as"),
         "{0.user}".format(client))
 
+    active_servers = client.guilds
+    print("Active in %s servers" %len(active_servers))
+    active_servers_list = sorted([guild.name for guild in active_servers])
+    print(active_servers_list)
+
 
 @client.event
 async def on_message(message):
@@ -52,17 +57,8 @@ async def on_message(message):
         # message.content))
 
         # useful commands
-        # detects if there any uwu or owo in the message
-        if any(elt in message.content for elt in tt.list_permutations("uwu")) or any(
-                elt in message.content for elt in tt.list_permutations("owo")):
-            translation = tt.text_translation(message.content)
-            print("%s: Identified uwu/owo in content" %
-                  (datetime.now().strftime("%H:%M:%S")))
-            print("\tSent translation: %s" % (translation))
-            await message.channel.send(translation)
-
         # says and translates a given message
-        elif message.content.startswith(bot_prefix + "say"):
+        if message.content.startswith(bot_prefix + "say"):
             translation = tt.text_translation(
                 message.content[len(bot_prefix) + 4:])
             print("%s: Identified %ssay command" %
@@ -123,11 +119,15 @@ async def on_message(message):
                   (datetime.now().strftime("%H:%M:%S"), bot_prefix))
             await message.channel.send("*Prefix:* ``%s``\n*Commands:*\n``%swhoru``: I talk extensively about myself because I don't have a gf\n``%scommands``: I display this message once again, because why not\n``your_message containing uwu/owo``: I reply to your message and translate it into its UwU and OwO form\n``%ssay + your_message``: I delete your message and translate it into its UwU and OwO form\n``%sgif``: I post a random gif that is very much OwO\n``%scpasta``: I post a random copypasta that is very much OwO" % (bot_prefix, bot_prefix, bot_prefix, bot_prefix, bot_prefix, bot_prefix))  # bot_prefix
 
-try:  # if you're working on repl.it
-    os.getenv()
-    discord_token = os.getenv("discord_token")
-    api_key = os.getenv("api_key")
-except BaseException:  # if you're working on your usual ide
-    discord_token, api_key = get_tokens()
+        # detects if there any uwu or owo in the message
+        elif any(elt in message.content for elt in tt.list_permutations("uwu")) or any(
+                elt in message.content for elt in tt.list_permutations("owo")):
+            translation = tt.text_translation(message.content)
+            print("%s: Identified uwu/owo in content" %
+                  (datetime.now().strftime("%H:%M:%S")))
+            print("\tSent translation: %s" % (translation))
+            await message.channel.send(translation)
 
+
+discord_token, api_key = get_tokens()
 client.run(discord_token)
