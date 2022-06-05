@@ -1,2 +1,3 @@
 you:u
 love:luv
+dead:ded
