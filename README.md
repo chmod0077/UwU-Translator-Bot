@@ -1,6 +1,7 @@
 # UwU-Translator-Bot
 ### A Discord Bot that translates any sentence into its UwU and OwO form.
-![pfp](/medias/uwu_translator_bot.png)
+![pfp](/medias/uwu_translator_bot.png)<br><br>
+![](https://dcbadge.vercel.app/api/shield/963371046533234728?bot=true)
 
 ## Commands
 ### Prefix: ^^
