@@ -7,8 +7,7 @@ from pathlib import Path
 
 
 class TextTranslator:
-    def __init__(self) -> None:
-        current_dir = str(Path(__file__).parent.resolve()) + '/medias/'
+    def __init__(self, current_dir) -> None:
         self.MR = MediaRetriever(current_dir)
 
     def list_permutations(self, word):
