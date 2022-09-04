@@ -113,7 +113,7 @@ async def on_message(message):
         elif message.content.startswith(bot_prefix + "whoru"):
             print("%s: Identified %swhoru command" %
                   (datetime.now().strftime("%H:%M:%S"), bot_prefix))
-            await message.channel.send(TT.text_translation("Hello! My name is ") + "{0.user}\nMy pronouns are (NVIDIA GeForce RTX 2060 Intel Core i5-10400F CPU 16.0GB RAM/ them).\nMy main purpose is to translate your text into something very UwU.\nI have been created by Anne Frs in only one day! Which probably explains why my organism\nis a complete mess and I can't do much :(".format(client))
+            await message.channel.send(TT.text_translation("Hello! My name is ") + "{0.user}\nMy pronouns are (NVIDIA GeForce RTX 2060 Intel Core i5-10400F CPU 16.0GB RAM/ them).\nMy main purpose is to translate your text into something very UwU.\nI have been created by Thomas Frs in only one day! Which probably explains why my organism\nis a complete mess and I can't do much :( (and im very cringe)".format(client))
 
         elif message.content.startswith(bot_prefix + "commands"):
             print("%s: Identified %scommands command" %
